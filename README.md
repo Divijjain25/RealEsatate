@@ -18,3 +18,11 @@ AI-assisted lead management and follow-up automation for Indian real-estate agen
 ## Planned stack
 
 Next.js (App Router, TypeScript) · Tailwind CSS + shadcn/ui · Supabase (Postgres, Auth, Storage, Cron) · Vercel · WhatsApp Business Platform Cloud API · Claude API
+
+## Build steps (Phase 2)
+
+| Step | Guide | Status |
+|---|---|---|
+| 0 | [Setup: Chromebook, tools, accounts](docs/steps/step-00-setup.md) | In progress — waiting on setup-check output |
+
+Check your machine setup with `bash scripts/check-setup.sh` (prints versions and yes/no checks only, no secrets).
