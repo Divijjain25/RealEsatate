@@ -2,7 +2,7 @@
 
 AI-assisted lead management and follow-up automation for Indian real-estate agents and agencies.
 
-> **Current status: Phase 2, Step 1 code written, awaiting verification on the live Supabase dev project.** Signup, login, password reset, agency creation and a placeholder dashboard exist. Leads, follow-ups, WhatsApp and AI are not built yet. Nothing is deployed.
+> **Current status: Phase 2, Step 1 done and verified on the live Supabase dev project.** Signup, login, password reset, agency creation and a placeholder dashboard exist. Leads, follow-ups, WhatsApp and AI are not built yet. Nothing is deployed.
 
 ## Blueprint documents
 
@@ -24,8 +24,8 @@ Next.js 16 (App Router, TypeScript, Cache Components) · Tailwind CSS · Supabas
 | Step | Guide | Status |
 |---|---|---|
 | 0 | [Setup: Chromebook, tools, accounts](docs/steps/step-00-setup.md) | ✅ Done (setup check passed; Supabase and Vercel accounts created) |
-| 1 | [App skeleton, login, agency, isolation test](docs/steps/step-01-auth-agency.md) | 🟡 Code done; build, lint and local DB RLS tests pass. Waiting on live Supabase test |
-| 2 | Leads + first Vercel deploy | Not started |
+| 1 | [App skeleton, login, agency, isolation test](docs/steps/step-01-auth-agency.md) | ✅ Done (signup/login/logout/agency verified by hand; live isolation test 12/12 passed) |
+| 2 | Leads + first Vercel deploy | Next |
 
 ## Running locally
 
