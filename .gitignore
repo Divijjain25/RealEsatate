@@ -1,15 +1,22 @@
-# Secrets — never commit
+# Secrets — never commit. Only the empty template (.env.example) is tracked.
 .env
 .env*.local
 .env.*
 !.env.example
 
-# Dependencies / build
-node_modules/
-.next/
-out/
-.vercel/
+# Dependencies / build output
+/node_modules
+/.next/
+/out/
+/build
+/coverage
+*.tsbuildinfo
+next-env.d.ts
 
-# OS / editor
+# Vercel
+.vercel
+
+# OS / editor / logs
 .DS_Store
+*.pem
 *.log

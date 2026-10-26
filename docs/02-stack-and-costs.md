@@ -64,7 +64,7 @@ flowchart LR
 | Variable | Public? | Kahan se milega | Kab chahiye |
 |---|---|---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | Haan | Supabase → Project Settings → API | Phase 2 Step 1 |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` (publishable) | Haan (RLS ke saath safe) | Same | Step 1 |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (ya legacy anon key) | Haan (RLS ke saath safe) | Same | Step 1 |
 | `SUPABASE_SERVICE_ROLE_KEY` (secret) | **NAHI** | Same | Cron/webhooks (Step 3+) |
 | `APP_URL` | Server | Vercel URL / domain | Step 1 |
 | `CRON_SECRET` | **NAHI** | Khud random banayenge (`openssl rand -hex 32`) | Step 3 |

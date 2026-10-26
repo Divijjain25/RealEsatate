@@ -2,7 +2,7 @@
 
 AI-assisted lead management and follow-up automation for Indian real-estate agents and agencies.
 
-> **Current status: Phase 1 — Blueprint only.** No application code exists yet. Nothing described in these docs is built, deployed, or tested until a later commit says so.
+> **Current status: Phase 2, Step 1 code written, awaiting verification on the live Supabase dev project.** Signup, login, password reset, agency creation and a placeholder dashboard exist. Leads, follow-ups, WhatsApp and AI are not built yet. Nothing is deployed.
 
 ## Blueprint documents
 
@@ -15,15 +15,33 @@ AI-assisted lead management and follow-up automation for Indian real-estate agen
 | 05 | [WhatsApp, AI & scheduler](docs/05-whatsapp-ai-scheduler.md) | Webhooks, consent/opt-out, templates, AI guardrails, job queue with retries and dedupe |
 | 06 | [Build roadmap & deployment](docs/06-build-roadmap-and-deployment.md) | Phase 2 build steps with done-checks, the Phase 3 test plan, deployment, and the final checklist |
 
-## Planned stack
+## Stack
 
-Next.js (App Router, TypeScript) · Tailwind CSS + shadcn/ui · Supabase (Postgres, Auth, Storage, Cron) · Vercel · WhatsApp Business Platform Cloud API · Claude API
+Next.js 16 (App Router, TypeScript, Cache Components) · Tailwind CSS · Supabase (Postgres, Auth; Storage and Cron later) · Zod · planned: Vercel, WhatsApp Business Platform Cloud API, Claude API
 
 ## Build steps (Phase 2)
 
 | Step | Guide | Status |
 |---|---|---|
-| 0 | [Setup: Chromebook, tools, accounts](docs/steps/step-00-setup.md) | ✅ Done — setup check 11/11 passed; Supabase and Vercel accounts created |
-| 1 | Next.js app + login + agency + first isolation test | Next |
+| 0 | [Setup: Chromebook, tools, accounts](docs/steps/step-00-setup.md) | ✅ Done (setup check passed; Supabase and Vercel accounts created) |
+| 1 | [App skeleton, login, agency, isolation test](docs/steps/step-01-auth-agency.md) | 🟡 Code done; build, lint and local DB RLS tests pass. Waiting on live Supabase test |
+| 2 | Leads + first Vercel deploy | Not started |
 
-Check your machine setup with `bash scripts/check-setup.sh` (prints versions and yes/no checks only, no secrets).
+## Running locally
+
+```bash
+npm install
+cp .env.example .env.local   # then fill in the two Supabase values
+npm run dev                  # http://localhost:3000
+```
+
+| Command | What it does |
+|---|---|
+| `npm run dev` | Start the app in development mode |
+| `npm run build` | Production build (also type-checks) |
+| `npm run lint` / `npm run typecheck` | ESLint / TypeScript checks |
+| `npm run test:isolation -- you@gmail.com` | Live agency-isolation test against the Supabase dev project (needs "Confirm email" off) |
+| `bash scripts/test-db-local.sh` | Applies all migrations to a throwaway local PostgreSQL and runs the RLS tests (needs PostgreSQL server binaries; not needed on the Chromebook) |
+| `bash scripts/check-setup.sh` | Checks the machine setup (prints no secrets) |
+
+Database changes live in `supabase/migrations/` and are applied in filename order.
