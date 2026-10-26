@@ -2,6 +2,7 @@ import "server-only";
 
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { connection } from "next/server";
 
 import { supabaseEnv } from "./env";
 
@@ -9,9 +10,11 @@ import { supabaseEnv } from "./env";
 // It acts as the logged-in user (from the session cookie), so every query
 // goes through Row Level Security. Create a new one per request.
 export async function createClient() {
-  // Read cookies first: it marks the render as per-request, so Next.js never
-  // tries to run this at build time.
+  // Read cookies, then wait for the real request: Supabase checks token expiry
+  // with the current time (Date.now()), which Next.js must never prerender —
+  // not at build time and not in the prefetched App Shell.
   const cookieStore = await cookies();
+  await connection();
   const { url, key } = supabaseEnv();
 
   return createServerClient(url, key, {
