@@ -108,13 +108,26 @@ Left menu **Authentication** → **Sign In / Providers** (ya "Providers") → **
 
 ## Part D: `.env.local` file banao (Supabase ka address + public key)
 
-**D1. Values dhoondo:** Supabase → ⚙ **Project Settings** → **API Keys** (kuch accounts mein **Data API**):
-- **Project URL**: `https://abcdxyz.supabase.co` jaisa
-- **Publishable key**: `sb_publishable_…` se shuru (agar sirf "anon public" key dikhe, to woh bhi chalegi)
+Sirf **2 cheezein** chahiye: **Project URL** aur **Publishable key**.
+
+**D1. Project URL nikalo:** Chrome mein apna Supabase project kholo. Address bar mein link aisa hoga:
+`supabase.com/dashboard/project/abcdefghijklmnop`. Aakhri hissa (`abcdefghijklmnop`) aapka **project ID** hai. Project URL hai:
+`https://abcdefghijklmnop.supabase.co`
+(Yahi URL Supabase mein ⚙ **Project Settings → Data API** par bhi likha hota hai.)
+
+**D2. Publishable key copy karo:** Left menu ke neeche ⚙ **Project Settings** → **API Keys** → **Publishable key** wale box ke saath **Copy** button. Key `sb_publishable_…` se shuru hoti hai. Agar yeh nahi dikhe, to **"Legacy API Keys"** tab mein **`anon` `public`** key copy karo.
 
 🔴 **`secret` / `service_role` key mat copy karna.** Woh is file mein nahi jaati.
 
-**D2. File banao:** Terminal mein:
+**D3. Aasaan tareeka: helper script.** Terminal mein:
+```bash
+cd ~/projects/RealEsatate
+git pull
+bash scripts/setup-env.sh
+```
+Script do sawaal poochhegi. Har sawaal par value paste karo (**Ctrl+Shift+V**) aur **Enter** dabao. Galat cheez paste ki (jaise secret key) to script rok degi. End mein woh Supabase se check karti hai, aur **"✅ Supabase ne URL aur key dono accept kar li"** aana chahiye.
+
+**D4. Manual tareeka (agar script na chale):** Terminal mein:
 ```bash
 cd ~/projects/RealEsatate
 cp .env.example .env.local

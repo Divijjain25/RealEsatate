@@ -31,7 +31,7 @@ Next.js 16 (App Router, TypeScript, Cache Components) · Tailwind CSS · Supabas
 
 ```bash
 npm install
-cp .env.example .env.local   # then fill in the two Supabase values
+bash scripts/setup-env.sh    # creates .env.local (or copy .env.example by hand)
 npm run dev                  # http://localhost:3000
 ```
 
@@ -42,6 +42,7 @@ npm run dev                  # http://localhost:3000
 | `npm run lint` / `npm run typecheck` | ESLint / TypeScript checks |
 | `npm run test:isolation -- you@gmail.com` | Live agency-isolation test against the Supabase dev project (needs "Confirm email" off) |
 | `bash scripts/test-db-local.sh` | Applies all migrations to a throwaway local PostgreSQL and runs the RLS tests (needs PostgreSQL server binaries; not needed on the Chromebook) |
+| `bash scripts/setup-env.sh` | Asks for the Supabase URL and publishable key, validates them, writes `.env.local` and tests the connection |
 | `bash scripts/check-setup.sh` | Checks the machine setup (prints no secrets) |
 
 Database changes live in `supabase/migrations/` and are applied in filename order.
