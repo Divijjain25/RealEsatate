@@ -28,7 +28,7 @@ free_gb=$((free_kb / 1024 / 1024))
 if [ "$free_gb" -ge 5 ]; then
   ok "Free disk space in home: ${free_gb} GB"
 else
-  bad "Free disk space sirf ${free_gb} GB — kam se kam 5 GB chahiye (Linux disk size badhao)"
+  bad "Free disk space sirf ${free_gb} GB — kam se kam 5 GB chahiye (Settings → Linux → Disk size → Change; guide ka 'Disk space' section dekho)"
 fi
 echo
 
@@ -45,10 +45,10 @@ fi
 echo
 
 echo "[3] Node.js"
-if [ -s "$HOME/.nvm/nvm.sh" ]; then
+if [ -s "${NVM_DIR:-$HOME/.nvm}/nvm.sh" ] || [ -s "$HOME/.config/nvm/nvm.sh" ]; then
   ok "nvm installed hai"
 else
-  warn "nvm nahi mila (~/.nvm) — agar Node kisi aur tareeke se install kiya hai to theek hai"
+  warn "nvm nahi mila — agar Node kisi aur tareeke se install kiya hai to theek hai"
 fi
 if command -v node >/dev/null 2>&1; then
   node_version=$(node -v)

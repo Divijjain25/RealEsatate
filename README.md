@@ -23,6 +23,7 @@ Next.js (App Router, TypeScript) · Tailwind CSS + shadcn/ui · Supabase (Postgr
 
 | Step | Guide | Status |
 |---|---|---|
-| 0 | [Setup: Chromebook, tools, accounts](docs/steps/step-00-setup.md) | In progress — waiting on setup-check output |
+| 0 | [Setup: Chromebook, tools, accounts](docs/steps/step-00-setup.md) | ✅ Done — setup check 11/11 passed; Supabase and Vercel accounts created |
+| 1 | Next.js app + login + agency + first isolation test | Next |
 
 Check your machine setup with `bash scripts/check-setup.sh` (prints versions and yes/no checks only, no secrets).

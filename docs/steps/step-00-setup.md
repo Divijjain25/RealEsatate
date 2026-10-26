@@ -202,6 +202,25 @@ Jab yeh sab ho jaayega, tab **Step 1** shuru karenge: Next.js app + login + agen
 
 ---
 
+## 💾 Disk space kam hai (check script: "Free disk space sirf X GB")
+
+Linux container ko jitni disk di thi, woh lagbhag bhar gayi hai. Step 1 mein Next.js ke packages (`node_modules`) aur build files ko **kam se kam 3–5 GB** chahiye.
+
+1. Pehle Linux ka faltu cache saaf karo:
+   ```bash
+   sudo apt clean
+   npm cache clean --force
+   df -h ~
+   ```
+   `Avail` column mein free space dikhegi.
+2. Linux disk badhao: ⚙ **Settings** → search box mein `Linux` likho → **Linux development environment** → **Disk size** → **Change** → slider ko **15 GB** (ya jitna ho sake) par le jao → **Resize**.
+3. **Slider aage nahi badh raha?** Iska matlab Chromebook ki apni storage bhari hui hai. Pehle ChromeOS mein jagah khali karo:
+   - **Files** app → **Downloads**: purani videos, PDFs, `.deb` files delete karo (VS Code install ho chuka ho to uski `.deb` bhi).
+   - ⚙ Settings → **Device → Storage management**: dekho kya jagah le raha hai (Android apps, offline files, browsing data).
+   - Jo Android apps use nahi karte, unhe uninstall karo.
+   Phir step 2 dobara karo.
+4. Terminal **band karke dobara kholo** → `bash scripts/check-setup.sh` dobara chalao.
+
 ## 🛠 Common errors aur fix
 
 | Error / problem | Matlab | Fix |
