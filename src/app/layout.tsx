@@ -13,7 +13,11 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full antialiased">
-      <body className="flex min-h-full flex-col bg-slate-50 text-slate-900">{children}</body>
+      {/* Browser extensions (e.g. ColorZilla's cz-shortcut-listen) add attributes
+          to <body> before React loads; ignore attribute mismatches on this tag only. */}
+      <body suppressHydrationWarning className="flex min-h-full flex-col bg-slate-50 text-slate-900">
+        {children}
+      </body>
     </html>
   );
 }
