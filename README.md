@@ -2,7 +2,7 @@
 
 AI-assisted lead management and follow-up automation for Indian real-estate agents and agencies.
 
-> **Current status: Phase 2, Step 1 done and verified on the live Supabase dev project.** Signup, login, password reset, agency creation and a placeholder dashboard exist. Leads, follow-ups, WhatsApp and AI are not built yet. Nothing is deployed.
+> **Current status: Phase 2, Step 2 code written, awaiting verification on the live Supabase dev project and first Vercel deploy.** Auth, agencies, leads (search, filters, assignment, bulk actions, timeline) and a live dashboard exist. Reminders, properties, site visits, WhatsApp API and AI are not built yet.
 
 ## Blueprint documents
 
@@ -25,7 +25,8 @@ Next.js 16 (App Router, TypeScript, Cache Components) · Tailwind CSS · Supabas
 |---|---|---|
 | 0 | [Setup: Chromebook, tools, accounts](docs/steps/step-00-setup.md) | ✅ Done (setup check passed; Supabase and Vercel accounts created) |
 | 1 | [App skeleton, login, agency, isolation test](docs/steps/step-01-auth-agency.md) | ✅ Done (signup/login/logout/agency verified by hand; live isolation test 12/12 passed) |
-| 2 | Leads + first Vercel deploy | Next |
+| 2 | [Leads, timeline, dashboard, first Vercel deploy](docs/steps/step-02-leads.md) | 🟡 Code done; unit tests, build, lint, local DB RLS tests (58 checks) and a mocked browser run pass. Waiting on live Supabase test + Vercel deploy |
+| 3 | Follow-up reminders, notifications, scheduled jobs | Not started |
 
 ## Running locally
 
@@ -40,6 +41,7 @@ npm run dev                  # http://localhost:3000
 | `npm run dev` | Start the app in development mode |
 | `npm run build` | Production build (also type-checks) |
 | `npm run lint` / `npm run typecheck` | ESLint / TypeScript checks |
+| `npm run test:unit` | Unit tests for phone, money, date, filter and form helpers (Node 22.18+) |
 | `npm run test:isolation -- you@gmail.com` | Live agency-isolation test against the Supabase dev project (needs "Confirm email" off) |
 | `bash scripts/test-db-local.sh` | Applies all migrations to a throwaway local PostgreSQL and runs the RLS tests (needs PostgreSQL server binaries; not needed on the Chromebook) |
 | `bash scripts/setup-env.sh` | Asks for the Supabase URL and publishable key, validates them, writes `.env.local` and tests the connection |

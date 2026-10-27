@@ -60,3 +60,18 @@ export async function getMyMembership(userId: string): Promise<Membership | null
 
   return data as unknown as Membership;
 }
+
+// For pages and actions inside the app: the logged-in user plus their
+// agency. Sends people without an agency to onboarding.
+export async function getAgencyContext(): Promise<{ user: CurrentUser; membership: Membership }> {
+  const user = await requireUser();
+  const membership = await getMyMembership(user.id);
+  if (!membership) {
+    redirect("/onboarding");
+  }
+  return { user, membership };
+}
+
+export function isManagerRole(role: MemberRole) {
+  return role === "owner" || role === "manager";
+}

@@ -3,7 +3,7 @@
 \set ON_ERROR_STOP 1
 \set QUIET 1
 
-create schema tests;
+create schema if not exists tests;
 grant usage on schema tests to anon, authenticated;
 
 create function tests.check(ok boolean, msg text) returns void

@@ -4,6 +4,8 @@ export type FormState = {
   error?: string;
   success?: string;
   fields?: Record<string, string>;
+  // Optional follow-up link shown with the message (e.g. "Open existing lead").
+  link?: { href: string; label: string };
 };
 
 export const initialFormState: FormState = {};

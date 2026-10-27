@@ -135,6 +135,65 @@ async function main() {
     );
   }
 
+  console.log("\n[Leads — Step 2]");
+  const leadPhone = `+919${String(Math.floor(Math.random() * 1e9)).padStart(9, "0")}`;
+  const { data: leadA, error: leadError } = await a.client
+    .from("leads")
+    .insert({ agency_id: a.agencyId, name: `Isolation Lead ${runId}`, phone_e164: leadPhone, assigned_to: a.userId })
+    .select("id")
+    .single();
+  if (leadError) {
+    check(false, `A can create a lead (${leadError.message} — did you run the Step 2 migration?)`);
+  } else {
+    check(true, "A can create a lead");
+    {
+      const { data } = await a.client.from("lead_activities").select("type").eq("lead_id", leadA.id);
+      check(data?.some((row) => row.type === "created"), "A's new lead has a 'created' timeline entry");
+    }
+    {
+      const { data } = await b.client.from("leads").select("id").eq("id", leadA.id);
+      check(data?.length === 0, "B cannot read A's lead");
+    }
+    {
+      const { data } = await b.client.from("lead_activities").select("id").eq("lead_id", leadA.id);
+      check(data?.length === 0, "B cannot read A's lead timeline");
+    }
+    {
+      const { data, error } = await b.client.from("leads").update({ name: "Hacked by B" }).eq("id", leadA.id).select("id");
+      check(!error && data.length === 0, "B cannot edit A's lead (0 rows changed)");
+    }
+    {
+      const { data } = await b.client.rpc("delete_leads", { p_ids: [leadA.id] });
+      check(data === 0, "B cannot delete A's lead");
+    }
+    {
+      const { error } = await b.client
+        .from("lead_activities")
+        .insert({ agency_id: a.agencyId, lead_id: leadA.id, type: "note", data: { text: "spam" } });
+      check(Boolean(error), "B cannot add a note to A's lead");
+    }
+    {
+      const { error } = await b.client
+        .from("leads")
+        .insert({ agency_id: a.agencyId, name: "Planted by B", phone_e164: "+919000000001" });
+      check(Boolean(error), "B cannot create a lead inside Agency A");
+    }
+    {
+      const { data } = await b.client.rpc("find_lead_by_phone", { p_agency_id: a.agencyId, p_phone: leadPhone });
+      check(!data || data.length === 0, "B cannot look up phone numbers in Agency A");
+    }
+    {
+      const { error } = await a.client
+        .from("leads")
+        .insert({ agency_id: a.agencyId, name: "Duplicate", phone_e164: leadPhone, assigned_to: a.userId });
+      check(error?.code === "23505", "the same phone can't be added twice in one agency");
+    }
+    {
+      const { data } = await a.client.from("leads").select("name").eq("id", leadA.id).single();
+      check(data?.name === `Isolation Lead ${runId}`, "A's lead is unchanged after B's attempts");
+    }
+  }
+
   console.log("\n[Logged out]");
   {
     const anon = newClient();
@@ -142,6 +201,8 @@ async function main() {
     check(Boolean(error) || data.length === 0, "logged-out visitor sees no agencies");
     const { error: rpcError } = await anon.rpc("create_agency", { p_name: "Anon agency" });
     check(Boolean(rpcError), "logged-out visitor cannot create an agency");
+    const { data: leads, error: leadsError } = await anon.from("leads").select("id");
+    check(Boolean(leadsError) || leads.length === 0, "logged-out visitor sees no leads");
   }
 
   console.log(
@@ -151,7 +212,8 @@ async function main() {
   );
   console.log(
     "\nTest data cleanup (optional): Supabase → Authentication → Users → delete the two\n" +
-      `"+leados…${runId}" users, then SQL Editor:  delete from agencies where name like 'Isolation Test Agency %';`,
+      `"+leados…${runId}" users, then SQL Editor:  delete from agencies where name like 'Isolation Test Agency %';\n` +
+      "(deleting an agency also deletes its leads and timeline)",
   );
   process.exit(failures === 0 ? 0 : 1);
 }
