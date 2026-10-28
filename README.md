@@ -27,7 +27,7 @@ Next.js 16 (App Router, TypeScript, Cache Components) · Tailwind CSS · Supabas
 | 1 | [App skeleton, login, agency, isolation test](docs/steps/step-01-auth-agency.md) | ✅ Done (signup/login/logout/agency verified by hand; live isolation test 12/12 passed) |
 | 2 | [Leads, timeline, dashboard, first Vercel deploy](docs/steps/step-02-leads.md) | ✅ Done (41 unit tests, 58 local RLS checks, 14 manual checks, live isolation test 24/24; deployed to Vercel and checked on a phone) |
 | 2b | [CSV import from Excel / Google Sheets](docs/steps/step-02b-csv-import.md) | ✅ Done (53 unit tests, local DB import tests, manual import checks, live isolation test 28/28) |
-| 3 | Follow-up reminders, notifications, scheduled jobs | Next |
+| 3 | [Follow-up reminders, notifications, scheduler](docs/steps/step-03-reminders.md) | 🟡 Code done; local DB scheduler tests (33 checks), build, lint and a mocked browser run pass. Waiting on live Supabase + Cron setup |
 
 ## Running locally
 
@@ -48,4 +48,4 @@ npm run dev                  # http://localhost:3000
 | `bash scripts/setup-env.sh` | Asks for the Supabase URL and publishable key, validates them, writes `.env.local` and tests the connection |
 | `bash scripts/check-setup.sh` | Checks the machine setup (prints no secrets) |
 
-Database changes live in `supabase/migrations/` and are applied in filename order.
+Database changes live in `supabase/migrations/` and are applied in filename order. `supabase/cron/schedule.sql` turns on the 5-minute scheduler (needs the pg_cron extension).

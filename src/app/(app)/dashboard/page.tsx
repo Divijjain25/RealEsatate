@@ -3,11 +3,12 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 import { StatusBadge, TemperatureBadge } from "@/components/lead-badges";
-import { getAgencyContext } from "@/lib/auth";
+import { getAgencyContext, isManagerRole } from "@/lib/auth";
 import { formatIstDateTime, istDayRange } from "@/lib/dates";
 import { leadsHref } from "@/lib/leads/filters";
 import { getDashboardCounts, getPriorityLeads } from "@/lib/leads/queries";
 import { formatBudget } from "@/lib/money";
+import { getSchedulerHealth, type SchedulerHealth } from "@/lib/notifications";
 import { phoneDigits } from "@/lib/phone";
 
 export const metadata: Metadata = { title: "Dashboard · RealEstate LeadOS" };
@@ -25,11 +26,14 @@ export default function DashboardPage() {
 // Reads the session, so it streams in behind the Suspense boundary.
 async function DashboardContent() {
   const { user, membership } = await getAgencyContext();
-  const [counts, priority] = await Promise.all([
+  const canManage = isManagerRole(membership.role);
+  const [counts, priority, health] = await Promise.all([
     getDashboardCounts(membership.agency.id),
     getPriorityLeads(membership.agency.id),
+    canManage ? getSchedulerHealth(membership.agency.id) : Promise.resolve(null),
   ]);
-  const todayStart = istDayRange(new Date()).start.getTime();
+  const now = new Date().getTime();
+  const todayStart = istDayRange(new Date(now)).start.getTime();
   const scope = membership.role === "agent" ? "Your leads" : "All agency leads";
 
   return (
@@ -113,6 +117,8 @@ async function DashboardContent() {
         )}
       </section>
 
+      {canManage && health ? <SchedulerHealthCard health={health} now={now} /> : null}
+
       <section className="rounded-2xl border-2 border-dashed border-slate-300 p-5 text-slate-600">
         <p className="mb-1 font-medium text-slate-800">Coming next (not connected yet)</p>
         <p className="text-sm">
@@ -147,5 +153,41 @@ function StatCard({
       <p className="text-xs uppercase tracking-wide text-slate-500">{label}</p>
       <p className={`mt-1 text-2xl font-semibold ${TONES[tone]}`}>{value}</p>
     </Link>
+  );
+}
+
+// Owners/managers: is the reminder system actually running?
+function SchedulerHealthCard({ health, now }: { health: SchedulerHealth; now: number }) {
+  const minutesAgo = health.last_run_at ? Math.floor((now - new Date(health.last_run_at).getTime()) / 60_000) : null;
+  const state = minutesAgo === null ? "never" : minutesAgo <= 15 ? "ok" : "stopped";
+  const tone = {
+    ok: "border-emerald-200 bg-emerald-50 text-emerald-900",
+    stopped: "border-red-200 bg-red-50 text-red-900",
+    never: "border-amber-200 bg-amber-50 text-amber-900",
+  }[state];
+
+  return (
+    <section className={`space-y-2 rounded-2xl border p-5 ${tone}`}>
+      <h2 className="font-semibold">
+        {state === "ok" ? "✅ Reminder system running" : state === "stopped" ? "🔴 Reminder system stopped" : "⏸ Reminder system not started"}
+      </h2>
+      <p className="text-sm">
+        {state === "never"
+          ? "Reminders and the morning summary start once Supabase Cron is switched on (Step 3 guide, Part C)."
+          : `Last run ${minutesAgo === 0 ? "just now" : `${minutesAgo} min ago`} (${formatIstDateTime(health.last_run_at)}). It should run every 5 minutes.`}
+      </p>
+      <p className="text-sm">
+        Waiting: {health.queued} · Retrying: {health.retrying} · Failed for good: {health.dead}
+      </p>
+      {health.recent_failures.length ? (
+        <ul className="space-y-1 text-xs">
+          {health.recent_failures.map((f, i) => (
+            <li key={i}>
+              {f.status === "dead" ? "Gave up" : "Retrying"}: {f.type} after {f.attempts} tries — {f.last_error ?? "unknown error"} ({formatIstDateTime(f.updated_at)})
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </section>
   );
 }

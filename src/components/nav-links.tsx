@@ -28,7 +28,7 @@ function NavList({ pathname }: { pathname: string | null }) {
             key={link.href}
             href={link.href}
             aria-current={active ? "page" : undefined}
-            className={`rounded-lg px-3 py-2 text-sm font-medium ${
+            className={`whitespace-nowrap rounded-lg px-2 py-2 text-sm font-medium sm:px-3 ${
               active ? "bg-emerald-50 text-emerald-800" : "text-slate-600 hover:bg-slate-100"
             }`}
           >

@@ -219,6 +219,28 @@ async function main() {
     check(Boolean(anonError), "logged-out visitor cannot import");
   }
 
+  console.log("\n[Notifications & scheduler — Step 3]");
+  {
+    const { error: listError } = await a.client.from("notifications").select("id").limit(1);
+    if (listError) {
+      check(false, `A can read its notifications (${listError.message} — did you run the Step 3 migration?)`);
+    } else {
+      check(true, "A can read its own notifications");
+      const { data: aIds } = await a.client.from("notifications").select("user_id");
+      check((aIds ?? []).every((row) => row.user_id === a.userId), "A only gets its own notifications");
+      const { data: bSees } = await b.client.from("notifications").select("id, user_id").neq("user_id", b.userId);
+      check((bSees ?? []).length === 0, "B cannot read anyone else's notifications");
+    }
+    const { error: runError } = await a.client.rpc("run_scheduler");
+    check(Boolean(runError), "app users cannot run the scheduler");
+    const { error: jobsError } = await a.client.from("jobs").select("id").limit(1);
+    check(Boolean(jobsError), "app users cannot read the job queue");
+    const { data: health, error: healthError } = await a.client.rpc("scheduler_health", { p_agency_id: a.agencyId });
+    check(!healthError && health && "last_run_at" in health, "owner A can see its system health");
+    const { error: bHealthError } = await b.client.rpc("scheduler_health", { p_agency_id: a.agencyId });
+    check(Boolean(bHealthError), "B cannot see Agency A's system health");
+  }
+
   console.log("\n[Logged out]");
   {
     const anon = newClient();

@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { supabaseEnv } from "./env";
 
 // Pages that need a logged-in user.
-const PROTECTED_PREFIXES = ["/dashboard", "/leads", "/onboarding", "/reset-password"];
+const PROTECTED_PREFIXES = ["/dashboard", "/leads", "/notifications", "/onboarding", "/reset-password"];
 // Pages that make no sense once you're logged in.
 const AUTH_PAGES = ["/login", "/signup", "/forgot-password"];
 
