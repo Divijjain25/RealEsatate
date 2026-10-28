@@ -2,7 +2,7 @@
 
 AI-assisted lead management and follow-up automation for Indian real-estate agents and agencies.
 
-> **Current status: Phase 2, Step 2 code written, awaiting verification on the live Supabase dev project and first Vercel deploy.** Auth, agencies, leads (search, filters, assignment, bulk actions, timeline) and a live dashboard exist. Reminders, properties, site visits, WhatsApp API and AI are not built yet.
+> **Current status: Phase 2, Step 2 done.** Auth, agencies, leads (search, filters, assignment, bulk actions, timeline) and a live dashboard are verified on the Supabase dev project and deployed to Vercel (Hobby plan, dev database): https://real-esatate-smoky.vercel.app. Reminders, properties, site visits, WhatsApp API and AI are not built yet.
 
 ## Blueprint documents
 
@@ -25,8 +25,8 @@ Next.js 16 (App Router, TypeScript, Cache Components) · Tailwind CSS · Supabas
 |---|---|---|
 | 0 | [Setup: Chromebook, tools, accounts](docs/steps/step-00-setup.md) | ✅ Done (setup check passed; Supabase and Vercel accounts created) |
 | 1 | [App skeleton, login, agency, isolation test](docs/steps/step-01-auth-agency.md) | ✅ Done (signup/login/logout/agency verified by hand; live isolation test 12/12 passed) |
-| 2 | [Leads, timeline, dashboard, first Vercel deploy](docs/steps/step-02-leads.md) | 🟡 Code done; unit tests, build, lint, local DB RLS tests (58 checks) and a mocked browser run pass. Waiting on live Supabase test + Vercel deploy |
-| 3 | Follow-up reminders, notifications, scheduled jobs | Not started |
+| 2 | [Leads, timeline, dashboard, first Vercel deploy](docs/steps/step-02-leads.md) | ✅ Done (41 unit tests, 58 local RLS checks, 14 manual checks, live isolation test 24/24; deployed to Vercel and checked on a phone) |
+| 3 | Follow-up reminders, notifications, scheduled jobs | Next |
 
 ## Running locally
 
