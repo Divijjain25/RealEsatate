@@ -2,7 +2,7 @@
 
 AI-assisted lead management and follow-up automation for Indian real-estate agents and agencies.
 
-> **Current status: Phase 2, Step 2 done.** Auth, agencies, leads (search, filters, assignment, bulk actions, timeline) and a live dashboard are verified on the Supabase dev project and deployed to Vercel (Hobby plan, dev database): https://real-esatate-smoky.vercel.app. Reminders, properties, site visits, WhatsApp API and AI are not built yet.
+> **Current status: Phase 2, Step 2b done.** Auth, agencies, leads (search, filters, assignment, bulk actions, timeline, CSV import) and a live dashboard are verified on the Supabase dev project and deployed to Vercel (Hobby plan, dev database): https://real-esatate-smoky.vercel.app. Reminders, properties, site visits, WhatsApp API and AI are not built yet.
 
 ## Blueprint documents
 
@@ -26,7 +26,7 @@ Next.js 16 (App Router, TypeScript, Cache Components) · Tailwind CSS · Supabas
 | 0 | [Setup: Chromebook, tools, accounts](docs/steps/step-00-setup.md) | ✅ Done (setup check passed; Supabase and Vercel accounts created) |
 | 1 | [App skeleton, login, agency, isolation test](docs/steps/step-01-auth-agency.md) | ✅ Done (signup/login/logout/agency verified by hand; live isolation test 12/12 passed) |
 | 2 | [Leads, timeline, dashboard, first Vercel deploy](docs/steps/step-02-leads.md) | ✅ Done (41 unit tests, 58 local RLS checks, 14 manual checks, live isolation test 24/24; deployed to Vercel and checked on a phone) |
-| 2b | [CSV import from Excel / Google Sheets](docs/steps/step-02b-csv-import.md) | 🟡 Code done; 53 unit tests, build, lint, local DB tests and a mocked browser import pass. Waiting on live Supabase test |
+| 2b | [CSV import from Excel / Google Sheets](docs/steps/step-02b-csv-import.md) | ✅ Done (53 unit tests, local DB import tests, manual import checks, live isolation test 28/28) |
 | 3 | Follow-up reminders, notifications, scheduled jobs | Next |
 
 ## Running locally
