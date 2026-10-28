@@ -127,7 +127,17 @@ async function LeadsView({ searchParams }: { searchParams: SearchParams }) {
           {total} lead{total === 1 ? "" : "s"}
           {hasFilters ? " match these filters" : ""}
         </p>
-        {canManage && rows.length > 0 ? <BulkBar members={members} /> : null}
+        <div className="flex flex-wrap items-center gap-2">
+          {canManage && rows.length > 0 ? <BulkBar members={members} /> : null}
+          {canManage ? (
+            <Link
+              href="/leads/import"
+              className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            >
+              Import CSV
+            </Link>
+          ) : null}
+        </div>
       </div>
 
       {rows.length === 0 ? (

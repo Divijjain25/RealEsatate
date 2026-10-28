@@ -194,6 +194,31 @@ async function main() {
     }
   }
 
+  console.log("\n[CSV import — Step 2b]");
+  {
+    const phone = `+919${String(Math.floor(Math.random() * 1e9)).padStart(9, "0")}`;
+    const { data, error } = await a.client.rpc("import_leads", {
+      p_agency_id: a.agencyId,
+      p_leads: [
+        { name: `Imported ${runId}`, phone_e164: phone, assigned_to: a.userId },
+        { name: "Repeat", phone_e164: phone, assigned_to: a.userId },
+      ],
+    });
+    if (error) {
+      check(false, `A can import leads (${error.message} — did you run the Step 2b migration?)`);
+    } else {
+      check(data?.[0]?.result === "imported", "A can import a lead");
+      check(data?.[1]?.result === "duplicate", "import skips a number that already exists");
+    }
+    const { data: planted } = await b.client.rpc("import_leads", {
+      p_agency_id: a.agencyId,
+      p_leads: [{ name: "Planted by B", phone_e164: "+919000000002" }],
+    });
+    check(planted?.[0]?.result === "error", "B cannot import leads into Agency A");
+    const { error: anonError } = await newClient().rpc("import_leads", { p_agency_id: a.agencyId, p_leads: [] });
+    check(Boolean(anonError), "logged-out visitor cannot import");
+  }
+
   console.log("\n[Logged out]");
   {
     const anon = newClient();

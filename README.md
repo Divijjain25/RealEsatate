@@ -26,6 +26,7 @@ Next.js 16 (App Router, TypeScript, Cache Components) · Tailwind CSS · Supabas
 | 0 | [Setup: Chromebook, tools, accounts](docs/steps/step-00-setup.md) | ✅ Done (setup check passed; Supabase and Vercel accounts created) |
 | 1 | [App skeleton, login, agency, isolation test](docs/steps/step-01-auth-agency.md) | ✅ Done (signup/login/logout/agency verified by hand; live isolation test 12/12 passed) |
 | 2 | [Leads, timeline, dashboard, first Vercel deploy](docs/steps/step-02-leads.md) | ✅ Done (41 unit tests, 58 local RLS checks, 14 manual checks, live isolation test 24/24; deployed to Vercel and checked on a phone) |
+| 2b | [CSV import from Excel / Google Sheets](docs/steps/step-02b-csv-import.md) | 🟡 Code done; 53 unit tests, build, lint, local DB tests and a mocked browser import pass. Waiting on live Supabase test |
 | 3 | Follow-up reminders, notifications, scheduled jobs | Next |
 
 ## Running locally
@@ -41,7 +42,7 @@ npm run dev                  # http://localhost:3000
 | `npm run dev` | Start the app in development mode |
 | `npm run build` | Production build (also type-checks) |
 | `npm run lint` / `npm run typecheck` | ESLint / TypeScript checks |
-| `npm run test:unit` | Unit tests for phone, money, date, filter and form helpers (Node 22.18+) |
+| `npm run test:unit` | Unit tests for phone, money, date, filter, form and CSV import helpers (Node 22.18+) |
 | `npm run test:isolation -- you@gmail.com` | Live agency-isolation test against the Supabase dev project (needs "Confirm email" off) |
 | `bash scripts/test-db-local.sh` | Applies all migrations to a throwaway local PostgreSQL and runs the RLS tests (needs PostgreSQL server binaries; not needed on the Chromebook) |
 | `bash scripts/setup-env.sh` | Asks for the Supabase URL and publishable key, validates them, writes `.env.local` and tests the connection |
